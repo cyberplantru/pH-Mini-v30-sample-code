@@ -5,7 +5,8 @@ __________
 ## pH measurement
 
 
-Connect the module to I2C bus the microcontroller board via cable Grove or Arduino pin headers.
+Connect the module to I2C bus the microcontroller board via cable Grove or Arduino pin headers. 
+Connect the pH electrode to BNC connector.
 
 
 ![pH to I2C](http://image.cyber-plant.com/var/resizes/pHtoI2C_pH_measurement.jpg?m=1447442262)
