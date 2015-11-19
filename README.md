@@ -53,9 +53,7 @@ Connecting multiple pHtoI2C modules to a single bus is trivial.
 Up to eight modules (provided their addresses
 are different) can be connected to a single I2C bus.
 Note that only one set of pull-up resistors is needed per
-bus.
-
-For more information about connect to I2C bus, see datasheet ADS1110
+bus. The resistors are included but not soldered to the board. 
 
 _______________________________________
 
