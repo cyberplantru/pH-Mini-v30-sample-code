@@ -37,7 +37,7 @@ unsigned int Interval = 1000;
 long previousMillis = 0;
 unsigned long Time;
 
-int incomingByte = 0;   // переменная для хранения полученного байта
+int incomingByte = 0;
 
 
 void setup()

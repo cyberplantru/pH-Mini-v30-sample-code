@@ -58,9 +58,7 @@ enum { REG = 9 }; // pin D9 is SS line for LMP91200
 void writeLMP91200(int ss_pin, uint16_t value)
 {
   digitalWrite(ss_pin, LOW);
-  /* Фокус вот в чём: сначала шлём старший байт */
   SPI.transfer(highByte(value));
-  /* А потом младший */
   SPI.transfer(lowByte(value));
   digitalWrite(ss_pin, HIGH);
   
