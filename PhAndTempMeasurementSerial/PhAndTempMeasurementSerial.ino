@@ -68,7 +68,7 @@ void setup()
   Wire.begin();
   Serial.begin(9600);
   SPI.setBitOrder(MSBFIRST);
-  SPI.setClockDivider(SPI_CLOCK_DIV32);
+  SPI.setClockDivider(SPI_CLOCK_DIV16);
   SPI.setDataMode(SPI_MODE3);
   SPI.begin();
 
