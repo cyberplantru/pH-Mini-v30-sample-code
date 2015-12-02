@@ -1,6 +1,6 @@
-##CyberPlant pHtoI2C v2.0
+##CyberPlant pH to I2C v2.0
 
-pH metering with Automatic Temperature Compensation for Arduino and other devices. The pHtoI2C supports the connection of a pH electrode with BNC and temperature sensor Pt100 / Pt1000 for temperature compensation of readings. To transfer the readings to the device module uses the I2C. You can connect many  modules to a single I2С bus at the same time busy will be only two pins at microcontroller. The CyberPlant pHtoI2C is perfect for automating hydroponic systems or aquariums, will be useful in laboratories or to collect data on the computer.
+pH metering with Automatic Temperature Compensation for Arduino and other devices. The module supports the connection of a temperature sensor pt100 /pt1000 for temperature compensation of readings pH. You can easily connect multiple modules to a single I2С bus at the same time busy will be only two pins at microcontroller. CyberPlant pH to I2C module is perfect for automating hydroponic systems or aquariums, will be useful in laboratories or to collect data on the computer.
 
 ##Features:
 
