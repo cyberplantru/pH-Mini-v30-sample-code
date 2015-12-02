@@ -57,6 +57,13 @@ are different) can be connected to a single I2C bus.
 Note that only one set of pull-up resistors is needed per
 bus. The resistors are included but not soldered to the board. 
 
+## Isolated sensor
+
+To eliminate electrical noise use [I2Ciso Module](https://github.com/cyberplantru/I2C-iso/). The I2Ciso recommended to when reading pH and Conductivity together.
+
+![pH to I2C](http://image.cyber-plant.com/var/resizes/pHtoI2C_iso.jpg?m=1449086266)
+
+
 _______________________________________
 
 [link to CyberPlant](http://www.cyberplant.info).
