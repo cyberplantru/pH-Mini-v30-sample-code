@@ -102,9 +102,9 @@ float pH_read() // read ADS
 float pH_calculate() // calculate pH
 {
   if (voltage > 0)
-  pH = 7.50 - alphaL * (T + tempManual) * voltage;
+  pH = IsoP - alphaL * (T + tempManual) * voltage;
   else if (voltage < 0)
-  pH = 7.50 - alphaH * (T + tempManual) * voltage;
+  pH = IsoP - alphaH * (T + tempManual) * voltage;
   return pH;
 }
 
