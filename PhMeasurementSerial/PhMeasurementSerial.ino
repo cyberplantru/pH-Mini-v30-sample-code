@@ -1,4 +1,13 @@
+/*
+  Example code for the pH to I2C module v2.0
+  
+  http://www.cyberplant.info
+  by CyberPlant LLC, 14 November 2015
+  This example code is in the public domain.
+  
+  upd. 08.12.2015
 
+*/
 #include "Wire.h"
 #include <EEPROM.h>
 #define pHtoI2C 0x48
