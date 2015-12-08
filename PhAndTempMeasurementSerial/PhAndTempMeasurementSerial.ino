@@ -1,7 +1,7 @@
 /*
   Example code for the pH to I2C module v2.0
   
-  http://www.cyberplant.info
+  http://www.cyber-plant.com
   by CyberPlant LLC, 14 November 2015
   This example code is in the public domain.
   

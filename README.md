@@ -66,5 +66,5 @@ To eliminate electrical noise use [I2Ciso Module](https://github.com/cyberplantr
 
 _______________________________________
 
-[link to CyberPlant](http://www.cyberplant.info).
+[link to CyberPlant](http://www.cyber-plant.com).
 
