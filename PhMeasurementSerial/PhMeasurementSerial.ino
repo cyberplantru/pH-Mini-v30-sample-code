@@ -1,11 +1,11 @@
 /*
   Example code for the pH to I2C module v2.0
-  
+  for Adruino IDE 1.6.6
   http://www.cyber-plant.com
   by CyberPlant LLC, 14 November 2015
   This example code is in the public domain.
   
-  upd. 08.12.2015
+  upd. 17.12.2015
 
 */
 #include "Wire.h"
@@ -29,29 +29,12 @@ int incomingByte = 0;
   float AlphaL;
   float AlphaH;
   
- struct MyObject {
-  float IsoP;
-  float AlphaL;
-  float AlphaH;
-};
-
-void setup() {
-
-  int eeAddress = 0; 
-
-  MyObject customVar;
-  EEPROM.get(eeAddress, customVar);
-  
-  IsoP = (customVar.IsoP);
-  AlphaL = (customVar.AlphaL);
-  AlphaH = (customVar.AlphaH);
-
+void setup()
+{
   Serial.begin(9600);
- 
   Wire.begin();
-
   Time=millis();
-
+  Read_EE();
   Serial.println("Calibrate commands:");
   Serial.println("pH :");
   Serial.println("      Cal. pH 4.00 ---- 4");
@@ -60,32 +43,47 @@ void setup() {
   Serial.println("      Reset pH ---------8");
   Serial.println("  ");
   delay(250);
-
 }
 
-void Reset_pH()
+ struct MyObject {
+float IsoP;
+float AlphaL;
+float AlphaH;
+};
+
+void Read_EE()
 {
+  int eeAddress = 0; 
 
-  int eeAddress = 0;
-
-  Serial.print("Reset pH ...");
-
-  MyObject customVar = {
-    7.5099949836,
-    0.0778344535,
-    0.0850976657
-  };
-
-  EEPROM.put(eeAddress, customVar);
-
+  MyObject customVar;
   EEPROM.get(eeAddress, customVar);
   
   IsoP = (customVar.IsoP);
   AlphaL = (customVar.AlphaL);
   AlphaH = (customVar.AlphaH);
+}
+
+void Reset_pH()
+{
+  Serial.print("Reset pH ...");
+
+  IsoP = 7.5099949836;
+  AlphaL = 0.0778344535;
+  AlphaH = 0.0850976657;
+  SaveSet();
   Serial.println(" complete");
 }
 
+void SaveSet()
+{
+  int eeAddress = 0;
+  MyObject customVar = {
+    IsoP,
+    AlphaL,
+    AlphaH
+  };
+  EEPROM.put(eeAddress, customVar);
+}
 
 
 void pH_read() // read ADS
@@ -122,25 +120,19 @@ void cal_sensors()
  {
   Serial.print("Cal. pH 4.00 ...");
   AlphaL = (IsoP - 4) / voltage / (T + tempManual);
-  int eeAddress = 0 + sizeof(float);
-  EEPROM.put(eeAddress,  AlphaL);
-  Serial.println(" complete");
+  SaveSet();
  }
  else if (incomingByte == 55) // press key "7"
  {
   Serial.print("Cal. pH 7.00 ...");
   IsoP = (IsoP - pH + 7.00);
-  int eeAddress = 0;
-  EEPROM.put(eeAddress, IsoP);
-  Serial.println(" complete");
+  SaveSet();
  }
   else if (incomingByte == 57) // press key "9"
  {
   Serial.print("Cal. pH 10.00 ...");
   AlphaH = (IsoP - 10) / voltage / (T + tempManual); 
-  int eeAddress = 0 + (sizeof(float)*2); 
-  EEPROM.put(eeAddress,  AlphaH);
-  Serial.println(" complete");
+  SaveSet();
  }
 }
 
