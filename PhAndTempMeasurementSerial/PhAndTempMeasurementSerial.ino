@@ -17,7 +17,7 @@
 #define PT_RES_NOMINAL      100.781  // +- 0.39 for pt100  
 #define T 273.15                    // degrees Kelvin
 
-float voltage, data;
+float voltage_pH, voltage, data;
 byte highbyte, lowbyte, configRegister;
 
 float pH;
@@ -153,16 +153,16 @@ void pH_read() // read ADS
   }
   data = highbyte * 256;
   data = data + lowbyte;
-  voltage = data * 2.048 ;
-  voltage = voltage / 32768;
+  voltage_pH = data * 2.048 ;
+  voltage_pH = voltage_pH / 32768;
 }
 
 void pH_calculate() // calculate pH
 {
   if (voltage > 0)
-  pH = IsoP - AlphaL * (T + tempManual) * voltage;
+  pH = IsoP - AlphaL * (T + tempManual) * voltage_pH;
   else if (voltage < 0)
-  pH = IsoP - AlphaH * (T + tempManual) * voltage;
+  pH = IsoP - AlphaH * (T + tempManual) * voltage_pH;
 }
 
 void cal_sensors()
@@ -175,7 +175,7 @@ void cal_sensors()
  else if (incomingByte == 52) // press key "4"
  {
   Serial.print("Cal. pH 4.00 ...");
-  AlphaL = (IsoP - 4) / voltage / (T + tempManual);
+  AlphaL = (IsoP - 4) / voltage_pH / (T + tempManual);
   int eeAddress = 0 + sizeof(float);
   EEPROM.put(eeAddress,  AlphaL);
   Serial.println(" complete");
@@ -191,7 +191,7 @@ void cal_sensors()
   else if (incomingByte == 57) // press key "9"
  {
   Serial.print("Cal. pH 10.00 ...");
-  AlphaH = (IsoP - 10) / voltage / (T + tempManual); 
+  AlphaH = (IsoP - 10) / voltage_pH / (T + tempManual); 
   int eeAddress = 0 + (sizeof(float)*2); 
   EEPROM.put(eeAddress,  AlphaH);
   Serial.println(" complete");
