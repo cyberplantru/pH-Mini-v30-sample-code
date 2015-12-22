@@ -5,7 +5,7 @@
   by CyberPlant LLC, 14 November 2015
   This example code is in the public domain.
   
-  upd. 08.12.2015
+  upd. 22.12.2015
 
 */
 
