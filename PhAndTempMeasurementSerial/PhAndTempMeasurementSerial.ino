@@ -5,7 +5,7 @@
   by CyberPlant LLC, 14 November 2015
   This example code is in the public domain.
   
-  upd. 22.12.2015
+  upd. 09.01.2016
 
 */
 
@@ -121,7 +121,7 @@ void pt100_read()
   averagetemp = totaltemp / numReadingstemp;
   temp = averagetemp;
   
-  if (temp>200 || temp<-20)
+  if (temp<-20 && temp>200)
     {
     temp = tempManual;
     }  
