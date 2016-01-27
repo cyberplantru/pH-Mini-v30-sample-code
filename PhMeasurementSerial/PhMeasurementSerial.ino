@@ -15,7 +15,7 @@
 #define PT_RES_NOMINAL      102.75  // +- 0.39 for pt100  
 #define T 273.15                    // degrees Kelvin
 
-float data, voltage, pH, temp, PT_CAL;
+float data, voltage, pH, temp;
 int tempManual = 25;
 
 const unsigned long Interval = 250;  // 1/4 second
