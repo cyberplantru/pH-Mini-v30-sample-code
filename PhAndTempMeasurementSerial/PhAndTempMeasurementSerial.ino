@@ -44,7 +44,7 @@ void writeLMP91200(uint16_t value)
 void setup()
 {
   Wire.begin();
-  Serial.begin(115200);
+  Serial.begin(9600);
   SPI.begin();
   pinMode(ss_pin, OUTPUT);
   writeLMP91200(0xE880);
