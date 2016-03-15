@@ -11,8 +11,6 @@
 #include "Wire.h"
 #include <EEPROM.h>
 #define pHtoI2C 0x48
-#define PT_TC               0.3850
-#define PT_RES_NOMINAL      102.75  // +- 0.39 for pt100  
 #define T 273.15                    // degrees Kelvin
 
 float data, voltage, pH, temp;
@@ -100,28 +98,33 @@ void cal_sensors()
   {
     case 56:
       Serial.print("Reset pH ...");
-      IsoP = 7.5099949836;
-      AlphaL = 0.0778344535;
-      AlphaH = 0.0850976657;
+      IsoP = 7.00;
+      AlphaL = 0.08;
+      AlphaH = 0.08;
+      SaveSet();
+      Serial.println(" complete");
       break;
 
     case 52:
       Serial.print("Cal. pH 4.00 ...");
       AlphaL = (IsoP - 4) / voltage / (T + tempManual);
+      SaveSet();
+      Serial.println(" complete");
       break;
 
     case 55:
       Serial.print("Cal. pH 7.00 ...");
       IsoP = (IsoP - pH + 7.00);
+      SaveSet();
+      Serial.println(" complete");
       break;
 
     case 57:
       Serial.print("Cal. pH 10.00 ...");
       AlphaH = (IsoP - 10) / voltage / (T + tempManual);
-      break;
-    default:
       SaveSet();
       Serial.println(" complete");
+      break;
   }
 }
 
@@ -136,7 +139,6 @@ void loop()
   if (millis() - Time >= Interval)
   {
     Time = millis();
-
     pH_read();
     showResults();
   }

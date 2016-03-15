@@ -1,18 +1,19 @@
-##CyberPlant pHtoI2C v2.0
+![EC Reader](http://image.cyber-plant.com/var/albums/miniSeriese.jpg?m=1458062565)
 
-pH metering with Automatic Temperature Compensation for Arduino and other devices. The pHtoI2C supports the connection of a pH electrode with BNC and temperature sensor Pt100 / Pt1000 for temperature compensation of readings. To transfer the readings to the device module uses the I2C. You can connect many  modules to a single I2С bus at the same time busy will be only two pins at microcontroller. The CyberPlant pHtoI2C is perfect for automating hydroponic systems or aquariums, will be useful in laboratories or to collect data on the computer.
+##CyberPlant pH Mini v3.0
+
+pH metering with Automatic Temperature Compensation for Arduino and other devices. The pH Mini supports the connection of a pH electrode with BNC and temperature sensor Pt100 / Pt1000 for temperature compensation of readings. To transfer the readings to the device module uses the I2C. You can connect many  modules to a single I2С bus at the same time busy will be only two pins at microcontroller. The CyberPlant pH Mini is perfect for automating hydroponic systems or aquariums, will be useful in laboratories or to collect data on the computer.
 
 ##Features:
 
 - Power Supply: 2.7V to 5.5V
-- PCB Size : 36.8 mm×20.3 mm
 - Measuring Range pH: 0-14
 - Accurate pH readings: ± 0.01 pH
 - Temp sensor support: pt100/pt1000
 - Accurate temperature readings::  ±0.3°C
 - BNC Connector
 - I2C port compatible with Grove
-
+- PCB Size : 33.02 mm×17.78 mm
 
 ## pH measurement
 
@@ -20,7 +21,7 @@ pH metering with Automatic Temperature Compensation for Arduino and other device
 Connect the module to I2C bus the microcontroller board via cable Grove or Arduino pin headers. 
 Connect the pH electrode to BNC connector. When first connecting need send the command "R" to configure the microcontroller.
 
-![pH to I2C](http://image.cyber-plant.com/var/resizes/pHtoI2C_pH_measurement.jpg?m=1447442262)
+![pH to I2C](http://image.cyber-plant.com/var/resizes/PHminiBaner1.jpg?m=1458074438)
 
 
 
@@ -47,21 +48,12 @@ See the sample code *PhAndTempMeasurementSerial.ino*
 
 For more information, about the control through the SPI interface, see datasheet LMP91200
 
-## Connecting multiple devices
-
-![pH to I2C](http://image.cyber-plant.com/var/resizes/pHtoI2C_pullUp.jpg?m=1447452013)
-
-Connecting multiple pHtoI2C modules to a single bus is trivial.
-Up to eight modules (provided their addresses
-are different) can be connected to a single I2C bus.
-Note that only one set of pull-up resistors is needed per
-bus. The resistors are included but not soldered to the board. 
 
 ## Isolated sensor
 
 To eliminate electrical noise use [I2Ciso Module](https://github.com/cyberplantru/I2C-iso/). The I2Ciso recommended to when reading pH and Conductivity together.
 
-![pH to I2C](http://image.cyber-plant.com/var/resizes/pHtoI2C_iso.jpg?m=1449086266)
+![pH to I2C](http://image.cyber-plant.com/var/resizes/PHminiBaner2%2Cjpg.jpg?m=1458075075)
 
 
 _______________________________________
