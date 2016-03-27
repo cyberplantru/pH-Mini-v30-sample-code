@@ -4,13 +4,12 @@
   http://www.cyber-plant.com
   by CyberPlant LLC, 14 November 2015
   This example code is in the public domain.
-
   upd. 27.03.2016
 */
 #include <SimpleTimer.h>
 #include "Wire.h"
 #include <EEPROM.h>
-#define pHtoI2C 0x48
+#define pHmini 0x48
 #define T 273.15                    // degrees Kelvin
 
 byte highbyte, lowbyte, configRegister;
@@ -64,7 +63,7 @@ void pH_read() // read ADS
 
 void ADSread ()
 {
-  Wire.requestFrom(pHtoI2C, 3);
+  Wire.requestFrom(pHmini, 3);
   while (Wire.available()) // ensure all the data comes in
   {
     highbyte = Wire.read(); // high byte * B11111111
@@ -113,11 +112,9 @@ void cal_sensors()
 
 void loop()
 {
-  if (Serial.available() > 0) //  calibration
-  {
+  if (Serial.available() > 47) {
     incomingByte = Serial.read();
     cal_sensors();
   }
   timer.run();
 }
-
