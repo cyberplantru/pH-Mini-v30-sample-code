@@ -19,38 +19,30 @@ ranging from 2.7V to 5.5V. You can connect many  modules to a single I2С bus at
 
 ## pH measurement
 
-
 Connect the module to I2C bus the microcontroller board via cable Grove or Arduino pin headers. 
 Connect the pH electrode to BNC connector. When first connecting need send the command "R" to configure the microcontroller.
 
 ![pH to I2C](http://image.cyber-plant.com/var/resizes/PHminiBaner1.jpg?m=1458074438)
 
-
-
 See the sample code *PhMeasurementSerial.ino*
 
 In sample code was used in one touch calibration sensor function.
-
-
 
 ## pH and Temp measurement
 
 Switch between the temperature and pH sensors is available through the SPI interface. Sensors reading at alternately via I2C bus.
 
-SPI headers pin SCLK (D13), SDI (D11) and CSB (D10) compatible with Arduino Mini. Solder the temperature sensor pt100 and 100 ohm resistor (blue)
-
-
+SPI headers pin SCLK (D13), SDI (D11) and CSB (D10) compatible with Arduino Mini. 
+Solder a 100 ohm resistor (blue) and connect a Pt100 temperature sensor.
 
 Sample code: *PhAndTempMeasurementSerial.ino*
 
-
-
 For more information, about the control through the SPI interface, see datasheet LMP91200
-
 
 ## Isolated sensor
 
-To eliminate electrical noise use [I2Ciso Module](https://github.com/cyberplantru/I2C-iso/). The I2Ciso recommended to when reading pH and Conductivity together.
+To eliminate electrical noise use [I2Ciso Module](https://github.com/cyberplantru/I2C-iso/). 
+I2C*iso* recommended when measuring the pH and conductivity together.
 
 ![pH to I2C](http://image.cyber-plant.com/var/resizes/PHminiBaner3%2Cjpg.jpg?m=1458077695)
 
