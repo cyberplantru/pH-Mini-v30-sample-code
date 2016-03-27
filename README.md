@@ -24,7 +24,8 @@ Connect the pH electrode to BNC connector. When first connecting need send the c
 
 ![pH to I2C](http://image.cyber-plant.com/var/resizes/PHminiBaner1.jpg?m=1458074438)
 
-See the sample code *PhMeasurementSerial.ino*
+
+**Sample code:** [*PhMeasurementSerial.ino*](https://github.com/cyberplantru/pH-Mini-v30-sample-code/blob/master/PhMeasurementSerial/PhMeasurementSerial.ino)
 
 In sample code was used in one touch calibration sensor function.
 
@@ -33,9 +34,11 @@ In sample code was used in one touch calibration sensor function.
 Switch between the temperature and pH sensors is available through the SPI interface. Sensors reading at alternately via I2C bus.
 
 SPI headers pin SCLK (D13), SDI (D11) and CSB (D10) compatible with Arduino Mini. 
-Solder a 100 ohm resistor (blue) and connect a Pt100 temperature sensor.
 
-Sample code: *PhAndTempMeasurementSerial.ino*
+For automatic temperature compensation solder a 100 ohm resistor (blue) and connect a Pt100 temperature sensor. The 3-step measurement can reach a precision as high as ±0.1°C (with RREF @ 0.01% of tolerance).
+
+
+**Sample code:** [*PhMeasurementSerial.ino*](https://github.com/cyberplantru/pH-Mini-v30-sample-code/blob/master/PhAndTempMeasurementSerial/PhAndTempMeasurementSerial.ino)
 
 ## Isolated sensor
 
