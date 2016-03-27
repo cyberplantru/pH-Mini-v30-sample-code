@@ -37,8 +37,6 @@ Solder a 100 ohm resistor (blue) and connect a Pt100 temperature sensor.
 
 Sample code: *PhAndTempMeasurementSerial.ino*
 
-For more information, about the control through the SPI interface, see datasheet LMP91200
-
 ## Isolated sensor
 
 To eliminate electrical noise use [I2Ciso Module](https://github.com/cyberplantru/I2C-iso/). 
@@ -47,7 +45,10 @@ Also I2C*iso* is needed for measurement of pH and Conductivity together in a sam
 ![pH to I2C](http://image.cyber-plant.com/var/resizes/PHminiBaner3%2Cjpg.jpg?m=1458077695)
 
 
-_______________________________________
+----------
+
+**[Hardware](https://github.com/cyberplantru/pH-to-I2C-v20-hardware)**
+
 
 [link to CyberPlant](http://www.cyber-plant.com).
 
