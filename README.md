@@ -43,6 +43,7 @@ For more information, about the control through the SPI interface, see datasheet
 
 To eliminate electrical noise use [I2Ciso Module](https://github.com/cyberplantru/I2C-iso/). 
 Also I2C*iso* is needed for measurement of pH and Conductivity together in a same reservoir.
+
 ![pH to I2C](http://image.cyber-plant.com/var/resizes/PHminiBaner3%2Cjpg.jpg?m=1458077695)
 
 
