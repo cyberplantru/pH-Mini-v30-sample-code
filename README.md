@@ -19,8 +19,8 @@ ranging from 2.7V to 5.5V. You can connect many  modules to a single I2С bus at
 
 ## pH measurement
 
-Connect the module to I2C bus the microcontroller board via cable Grove or Arduino pin headers. 
-Connect the pH electrode to BNC connector. When first connecting need send the command "R" to configure the microcontroller.
+Connect the module to I2C bus the microcontroller board via cable or pin headers. 
+Connect the pH electrode to BNC connector. When first connecting need send the command "1" to configure the microcontroller.
 
 ![pH to I2C](http://image.cyber-plant.com/var/resizes/PHminiBaner1.jpg?m=1458074438)
 
