@@ -38,7 +38,7 @@ SPI headers pin SCLK (D13), SDI (D11) and CSB (D10) compatible with Arduino Mini
 For automatic temperature compensation solder a 100 ohm resistor (blue) and connect a Pt100 temperature sensor. The 3-step measurement can reach a precision as high as ±0.1°C (with RREF @ 0.01% of tolerance).
 
 
-**Sample code:** [*PhMeasurementSerial.ino*](https://github.com/cyberplantru/pH-Mini-v30-sample-code/blob/master/PhAndTempMeasurementSerial/PhAndTempMeasurementSerial.ino)
+**Sample code:** [*PhAndTempMeasurementSerial.ino*](https://github.com/cyberplantru/pH-Mini-v30-sample-code/blob/master/PhAndTempMeasurementSerial/PhAndTempMeasurementSerial.ino)
 
 ## Isolated sensor
 
