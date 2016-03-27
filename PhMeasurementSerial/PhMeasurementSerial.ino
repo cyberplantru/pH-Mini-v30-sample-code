@@ -7,36 +7,30 @@
 
   upd. 27.03.2016
 */
-
+#include <SimpleTimer.h>
 #include "Wire.h"
 #include <EEPROM.h>
 #define pHtoI2C 0x48
 #define T 273.15                    // degrees Kelvin
 
-float pHvoltage, pH;
+byte highbyte, lowbyte, configRegister;
+float pHvoltage, pH, IsoP, Alpha, data;
 int TempManual = 25;
-
-const unsigned long Interval = 3000;
-long previousMillis = 0;
-unsigned long Time;
-
 int incomingByte = 0;
 
-float IsoP;
-float Alpha;
+SimpleTimer timer;
 
 void setup()
 {
   Wire.begin();
   Serial.begin(9600);
   Read_EE();
-  Time = millis();
-
   Serial.println("pH Mini v3.0");
   Serial.println("\n\      Cal. pH 6.86 ---- 7");
   Serial.println("      Cal. pH 4.00 ---- 4");
-  //Serial.println("      Cal. pH 9.18 ---- 4");
+  Serial.println("      Cal. pH 9.18 ---- 9");
   Serial.println("      Reset pH ---------1");
+  timer.setInterval(2500L, pH_read);
 }
 
 struct MyObject {
@@ -65,8 +59,11 @@ void SaveSet()
 
 void pH_read() // read ADS
 {
-  byte highbyte, lowbyte, configRegister;
-  float data;
+  ADSread();
+}
+
+void ADSread ()
+{
   Wire.requestFrom(pHtoI2C, 3);
   while (Wire.available()) // ensure all the data comes in
   {
@@ -79,11 +76,12 @@ void pH_read() // read ADS
   pHvoltage = data * 2.048 ;
   pHvoltage = pHvoltage / 32768; // mV
   pH = IsoP - Alpha * (T + TempManual) * pHvoltage;
+  Serial.print("\n\pH ");
+  Serial.println(pH);
 }
 
 void cal_sensors()
 {
-
   switch (incomingByte)
   {
 
@@ -96,7 +94,6 @@ void cal_sensors()
     case 52:
       Serial.print("\n\Cal. pH 4.00 ...");
       Alpha = (IsoP - 4) / pHvoltage / (T + TempManual);
-      //Alpha = (IsoP - 9.18) / pHvoltage / (T + TempManual);
       break;
 
     case 55:
@@ -104,30 +101,23 @@ void cal_sensors()
       IsoP = (IsoP - pH + 6.86);
       //IsoP = (IsoP - pH + 7.00);
       break;
+
+    case 57:
+      Serial.print("\n\Cal. pH 9.18 ...");
+      Alpha = (IsoP - 9.18) / pHvoltage / (T + TempManual);
+      break;
   }
   SaveSet();
   Serial.println(" complete");
 }
 
-void showResults ()
-{
-  Serial.print("\n\pH ");
-  Serial.println(pH);
-}
-
 void loop()
 {
-  if (millis() - Time >= Interval)
-  {
-    Time = millis();
-    pH_read();
-    showResults();
-  }
-
-  if (Serial.available() > 0) //  function of calibration
+  if (Serial.available() > 0) //  calibration
   {
     incomingByte = Serial.read();
     cal_sensors();
   }
+  timer.run();
 }
 
