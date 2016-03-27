@@ -13,7 +13,7 @@
 #define pHtoI2C 0x48
 #define T 273.15                    // degrees Kelvin
 
-float data, pHvoltage, pH, Temp;
+float pHvoltage, pH;
 int TempManual = 25;
 
 const unsigned long Interval = 3000;
@@ -30,7 +30,6 @@ void setup()
   Wire.begin();
   Serial.begin(9600);
   Read_EE();
-  Temp = TempManual;
   Time = millis();
 
   Serial.println("pH Mini v3.0");
@@ -42,7 +41,7 @@ void setup()
 
 struct MyObject {
   float IsoP;
-  float Alpha;;
+  float Alpha;
 };
 
 void Read_EE()
@@ -67,7 +66,8 @@ void SaveSet()
 void pH_read() // read ADS
 {
   byte highbyte, lowbyte, configRegister;
-  Wire.requestFrom(pHtoI2C, 3, sizeof(byte) * 3);
+  float data;
+  Wire.requestFrom(pHtoI2C, 3);
   while (Wire.available()) // ensure all the data comes in
   {
     highbyte = Wire.read(); // high byte * B11111111
@@ -78,7 +78,7 @@ void pH_read() // read ADS
   data = data + lowbyte;
   pHvoltage = data * 2.048 ;
   pHvoltage = pHvoltage / 32768; // mV
-  pH = IsoP - Alpha * (T + Temp) * pHvoltage;
+  pH = IsoP - Alpha * (T + TempManual) * pHvoltage;
 }
 
 void cal_sensors()
@@ -88,23 +88,24 @@ void cal_sensors()
   {
 
     case 49:
-      Serial.print("Reset pH ...");
+      Serial.print("\n\Reset pH ...");
       IsoP = 7.14;
       Alpha = 0.05916;
       break;
 
     case 52:
-      Serial.print("Cal. pH 4.00 ...");
-      Alpha = (IsoP - 4) / pHvoltage / (T + Temp);
-      //Alpha = (IsoP - 9.18) / pHvoltage / (T + Temp);
+      Serial.print("\n\Cal. pH 4.00 ...");
+      Alpha = (IsoP - 4) / pHvoltage / (T + TempManual);
+      //Alpha = (IsoP - 9.18) / pHvoltage / (T + TempManual);
       break;
 
     case 55:
-      Serial.print("Cal. pH 6.86 ...");
+      Serial.print("\n\Cal. pH 6.86 ...");
       IsoP = (IsoP - pH + 6.86);
       //IsoP = (IsoP - pH + 7.00);
       break;
   }
+  SaveSet();
   Serial.println(" complete");
 }
 
