@@ -2,7 +2,9 @@
 
 ##CyberPlant pH Mini v3.0
 
-pH metering with Automatic Temperature Compensation for Arduino and other devices. The pH Mini supports the connection of a pH electrode with BNC and temperature sensor Pt100 / Pt1000 for temperature compensation of readings. To transfer the readings to the device module uses the I2C. You can connect many  modules to a single I2С bus at the same time busy will be only two pins at microcontroller. The CyberPlant pH Mini is perfect for automating hydroponic systems or aquariums, will be useful in laboratories or to collect data on the computer.
+pH metering with Automatic Temperature Compensation for Arduino and other devices. The pH Mini supports the connection of a pH electrode with BNC and temperature sensor Pt100 / Pt1000 for temperature compensation of readings. The pH Mini uses an I2C-compatible
+serial interface and operates from a single power supply
+ranging from 2.7V to 5.5V. You can connect many  modules to a single I2С bus at the same time busy will be only two pins at microcontroller. The CyberPlant pH Mini is perfect for automating hydroponic systems or aquariums, will be useful in laboratories or to collect data on the computer.
 
 ##Features:
 
@@ -35,14 +37,11 @@ In sample code was used in one touch calibration sensor function.
 
 Switch between the temperature and pH sensors is available through the SPI interface. Sensors reading at alternately via I2C bus.
 
+SPI headers pin SCLK (D13), SDI (D11) and CSB (D10) compatible with Arduino Mini. Solder the temperature sensor pt100 and 100 ohm resistor (blue)
 
 
 
-For activate the control function on SPI cut off three jumpers on the bottom side of the board. Solder PLC headers to pin SCLK (D13), SDI (D11) and CSB (D8, D9 or D10). Solder the temperature sensor pt100 and 100 ohm resistor (blue)
-
-
-
-See the sample code *PhAndTempMeasurementSerial.ino*
+Sample code: *PhAndTempMeasurementSerial.ino*
 
 
 
