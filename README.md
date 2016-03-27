@@ -28,7 +28,7 @@ Connect the pH electrode to BNC connector. When first connecting need send the c
 See the sample code *PhMeasurementSerial.ino*
 
 In sample code was used in one touch calibration sensor function.
-![pH to I2C](http://image.cyber-plant.com/var/resizes/PhSerial.png?m=1447486499)
+
 
 
 ## pH and Temp measurement
@@ -36,15 +36,15 @@ In sample code was used in one touch calibration sensor function.
 Switch between the temperature and pH sensors is available through the SPI interface. Sensors reading at alternately via I2C bus.
 
 
-![pH to I2C](http://image.cyber-plant.com/var/resizes/pHtoI2C_pH%26temp_measurement.jpg?m=1447449390)
+
 
 For activate the control function on SPI cut off three jumpers on the bottom side of the board. Solder PLC headers to pin SCLK (D13), SDI (D11) and CSB (D8, D9 or D10). Solder the temperature sensor pt100 and 100 ohm resistor (blue)
 
-![pH to I2C](http://image.cyber-plant.com/var/resizes/pHtoI2C_SPI_set.jpg?m=1447450340)
+
 
 See the sample code *PhAndTempMeasurementSerial.ino*
 
-![pH to I2C](http://image.cyber-plant.com/var/resizes/PhTempSerial.png?m=1447486499)
+
 
 For more information, about the control through the SPI interface, see datasheet LMP91200
 
