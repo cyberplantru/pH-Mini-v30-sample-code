@@ -193,7 +193,7 @@ void ADSread(int rate) // read ADS
 
 void cal_sensors()
 {
-  Serial.println(" ");
+
   if (incomingByte == 56) // press key "8"
   {
     Serial.print("Reset pH ...");
@@ -207,9 +207,7 @@ void cal_sensors()
   }
   else if (incomingByte == 55) // press key "7"
   {
-    Serial.print("Cal. pH 6.86 ...");
-    IsoP = (IsoP - pH + 6.86);
-    //IsoP = (IsoP - pH + 7.00);
+
   }
   SaveSet();
   Serial.println(" complete");

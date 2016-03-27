@@ -1,11 +1,11 @@
 /*
-  Example code for the pH to I2C module v2.0
-  Works in Arduino IDE 1.6.7
+  Example code for the pH Mini v3.0
+  Works in Arduino IDE 1.6.8
   http://www.cyber-plant.com
   by CyberPlant LLC, 14 November 2015
   This example code is in the public domain.
 
-  upd. 27.01.2016
+  upd. 27.03.2016
 */
 
 #include "Wire.h"
@@ -13,40 +13,36 @@
 #define pHtoI2C 0x48
 #define T 273.15                    // degrees Kelvin
 
-float data, voltage, pH, temp;
-int tempManual = 25;
+float data, pHvoltage, pH, Temp;
+int TempManual = 25;
 
-const unsigned long Interval = 250;  // 1/4 second
+const unsigned long Interval = 3000;
 long previousMillis = 0;
 unsigned long Time;
 
 int incomingByte = 0;
 
 float IsoP;
-float AlphaL;
-float AlphaH;
+float Alpha;
 
 void setup()
 {
   Wire.begin();
   Serial.begin(9600);
   Read_EE();
-
-  Serial.println("Calibrate commands:");
-  Serial.println("pH :");
-  Serial.println("      Cal. pH 4.00 ---- 4");
-  Serial.println("      Cal. pH 7.00 ---- 7");
-  Serial.println("      Cal. pH 10.00 --- 9");
-  Serial.println("      Reset pH ---------8");
-  Serial.println("  ");
-  temp = tempManual;
+  Temp = TempManual;
   Time = millis();
+
+  Serial.println("pH Mini v3.0");
+  Serial.println("\n\      Cal. pH 6.86 ---- 7");
+  Serial.println("      Cal. pH 4.00 ---- 4");
+  //Serial.println("      Cal. pH 9.18 ---- 4");
+  Serial.println("      Reset pH ---------1");
 }
 
 struct MyObject {
   float IsoP;
-  float AlphaL;
-  float AlphaH;
+  float Alpha;;
 };
 
 void Read_EE()
@@ -55,8 +51,7 @@ void Read_EE()
   MyObject customVar;
   EEPROM.get(eeAddress, customVar);
   IsoP = (customVar.IsoP);
-  AlphaL = (customVar.AlphaL);
-  AlphaH = (customVar.AlphaH);
+  Alpha = (customVar.Alpha);
 }
 
 void SaveSet()
@@ -64,8 +59,7 @@ void SaveSet()
   int eeAddress = 0;
   MyObject customVar = {
     IsoP,
-    AlphaL,
-    AlphaH
+    Alpha
   };
   EEPROM.put(eeAddress, customVar);
 }
@@ -82,13 +76,9 @@ void pH_read() // read ADS
   }
   data = highbyte * 256;
   data = data + lowbyte;
-  voltage = data * 2.048 ;
-  voltage = voltage / 32768; // mV
-
-  if (voltage > 0)
-    pH = IsoP - AlphaL * (T + temp) * voltage;
-  else if (voltage < 0)
-    pH = IsoP - AlphaH * (T + temp) * voltage;
+  pHvoltage = data * 2.048 ;
+  pHvoltage = pHvoltage / 32768; // mV
+  pH = IsoP - Alpha * (T + Temp) * pHvoltage;
 }
 
 void cal_sensors()
@@ -96,41 +86,31 @@ void cal_sensors()
 
   switch (incomingByte)
   {
-    case 56:
+
+    case 49:
       Serial.print("Reset pH ...");
-      IsoP = 7.00;
-      AlphaL = 0.08;
-      AlphaH = 0.08;
-      SaveSet();
-      Serial.println(" complete");
+      IsoP = 7.14;
+      Alpha = 0.05916;
       break;
 
     case 52:
       Serial.print("Cal. pH 4.00 ...");
-      AlphaL = (IsoP - 4) / voltage / (T + tempManual);
-      SaveSet();
-      Serial.println(" complete");
+      Alpha = (IsoP - 4) / pHvoltage / (T + Temp);
+      //Alpha = (IsoP - 9.18) / pHvoltage / (T + Temp);
       break;
 
     case 55:
-      Serial.print("Cal. pH 7.00 ...");
-      IsoP = (IsoP - pH + 7.00);
-      SaveSet();
-      Serial.println(" complete");
-      break;
-
-    case 57:
-      Serial.print("Cal. pH 10.00 ...");
-      AlphaH = (IsoP - 10) / voltage / (T + tempManual);
-      SaveSet();
-      Serial.println(" complete");
+      Serial.print("Cal. pH 6.86 ...");
+      IsoP = (IsoP - pH + 6.86);
+      //IsoP = (IsoP - pH + 7.00);
       break;
   }
+  Serial.println(" complete");
 }
 
 void showResults ()
 {
-  Serial.print("  pH ");
+  Serial.print("\n\pH ");
   Serial.println(pH);
 }
 
