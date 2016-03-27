@@ -19,7 +19,7 @@ ranging from 2.7V to 5.5V. You can connect many  modules to a single I2С bus at
 
 ## pH measurement
 
-Connect the module to I2C bus the microcontroller board via cable or pin headers. 
+I2C pins of SDA (A4), SCL (A5), VCC and GND is compatible with the Arduino Pro Mini and duplicated at the end of the board for other connectivity options
 Connect the pH electrode to BNC connector. When first connecting need send the command "1" to configure the microcontroller.
 
 ![pH to I2C](http://image.cyber-plant.com/var/resizes/PHminiBaner1.jpg?m=1458074438)
