@@ -12,15 +12,12 @@
 #include "Wire.h"
 #include <SPI.h>
 #include <EEPROM.h>
-#include <LiquidCrystal_I2C.h>  // include LCD library
-#include <SoftwareSerial.h>
 
 #define pHtoI2C 0x48
 #define alpha              0.32
 #define PtRES_nominal      101.172 // +- 0.39 for pt100
 #define T 273.15                    // degrees Kelvin
 #define PGA_GAIN 10
-
 
 float voltage, pHvoltage, pH, Temp;
 float VOUT_RREF0, VOUT_RREF1;
@@ -43,6 +40,7 @@ void writeLMP91200(uint16_t value)
   digitalWrite(ss_pin, HIGH);
   SPI.endTransaction();
 }
+
 SimpleTimer timer;
 
 void setup()
@@ -54,13 +52,10 @@ void setup()
   writeLMP91200(0xF680);
   Read_EE();
   timer.setInterval(900L, cicleRead);
- Serial.println("Calibrate commands:");
-  Serial.println("pH :");
-  Serial.println("      Cal. pH 4.00 ---- 4");
+  Serial.println("pH Mini v3.0");
+  Serial.println("\n\      Cal. pH 4.00 ---- 4");
   Serial.println("      Cal. pH 6.86 ---- 7");
-//  Serial.println("      Cal. pH 10.00 --- 9");
   Serial.println("      Reset pH ---------8");
-  Serial.println("  ");
 }
 
 struct MyObject {
@@ -82,19 +77,18 @@ void SaveSet()
   int eeAddress = 0;
   MyObject customVar = {
     IsoP,
-    Alpha,
+    Alpha
   };
   EEPROM.put(eeAddress, customVar);
 }
 
 void showResults ()
 {
-  Serial.println("  ");
-  Serial.print("  Temp ");
+  Serial.print("\n\Temp ");
   Serial.print(Temp, 2);
   Serial.print(" *C ");
   Serial.print("  pH ");
-  Serial.print(pH);
+  Serial.println(pH);
 }
 
 void cicleRead()
