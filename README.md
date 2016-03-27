@@ -1,4 +1,4 @@
-![EC Reader](http://image.cyber-plant.com/var/albums/miniSeriese.jpg?m=1458062565)
+![EC Reader](http://image.cyber-plant.com/var/resizes/CyberPlantMiniSeries-01.jpg?m=1458131397)
 
 ##CyberPlant pH Mini v3.0
 
@@ -12,7 +12,7 @@ pH metering with Automatic Temperature Compensation for Arduino and other device
 - Temp sensor support: pt100/pt1000
 - Accurate temperature readings::  ±0.3°C
 - BNC Connector
-- I2C port compatible with Grove
+- Can use as Shield for Arduino Pro Mini
 - PCB Size : 33.02 mm×17.78 mm
 
 ## pH measurement
@@ -53,7 +53,7 @@ For more information, about the control through the SPI interface, see datasheet
 
 To eliminate electrical noise use [I2Ciso Module](https://github.com/cyberplantru/I2C-iso/). The I2Ciso recommended to when reading pH and Conductivity together.
 
-![pH to I2C](http://image.cyber-plant.com/var/resizes/PHminiBaner2%2Cjpg.jpg?m=1458075075)
+![pH to I2C](http://image.cyber-plant.com/var/resizes/PHminiBaner3%2Cjpg.jpg?m=1458077695)
 
 
 _______________________________________
