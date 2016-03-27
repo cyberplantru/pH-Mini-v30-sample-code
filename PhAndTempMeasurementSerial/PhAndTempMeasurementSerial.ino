@@ -4,18 +4,16 @@
   http://www.cyber-plant.com
   by CyberPlant LLC, 14 November 2015
   This example code is in the public domain.
-
   upd. 27.03.2016
 */
-
 #include <SimpleTimer.h>
 #include "Wire.h"
 #include <SPI.h>
 #include <EEPROM.h>
 
-#define pHtoI2C 0x48
-#define alpha              0.32
-#define PtRES_nominal      101.172 // +- 0.39 for pt100
+#define pHmini 0x48               // I2C adress for request
+#define alpha              0.38 // +- 0.01
+#define PtRES_nominal      100.00 // +- 0.38 for pt100
 #define T 273.15                    // degrees Kelvin
 #define PGA_GAIN 10
 
@@ -49,7 +47,7 @@ void setup()
   Serial.begin(9600);
   SPI.begin();
   pinMode(ss_pin, OUTPUT);
-  writeLMP91200(0xF680);
+  writeLMP91200(0x0000); // reset lmp91200
   Read_EE();
   timer.setInterval(900L, cicleRead);
   Serial.println("pH Mini v3.0");
@@ -138,7 +136,6 @@ void calcResult()
       }
 
       ADSread(0);
-      pHvoltage = voltage;
       pH = IsoP - Alpha * (T + Temp) * pHvoltage;
       writeLMP91200(0xF680); // table 5, pt100, VCM 1/4
       //writeLMP91200(0xD680); // table 5, pt1000, VCM 1/4
@@ -153,65 +150,71 @@ void calcResult()
 
 void ADSread(int rate) // read ADS
 {
-
   byte highbyte, lowbyte, configRegister;
   float data;
-
-  Wire.requestFrom(pHtoI2C, 3);
-  //Wire.requestFrom(pHtoI2C, 3, sizeof(byte) * 3);
-  if (Wire.available())
+  Wire.requestFrom(pHmini, 3);
+  while (Wire.available())
   {
     highbyte = Wire.read();
     lowbyte = Wire.read();
     configRegister = Wire.read();
-
     data = highbyte * 256;
     data = data + lowbyte;
     voltage = data * 2.048 ;
+  }
+  switch (rate)
+  {
+    case 0:
+      pHvoltage = voltage / 32768;
+      break;
+    /*
+        case 1:
+          voltage = voltage / 3276.8;
+          break;
+    */
+    case 2:
+      voltage = voltage / 327.68;
+      break;
 
-
-    switch (rate)
-    {
-      case 0:
-        voltage = voltage / 32768;
-        break;
-      /*
-          case 1:
-            voltage = voltage / 3276.8;
-            break;
-      */
-      case 2:
-        voltage = voltage / 327.68;
-        break;
-
-      case 3:
-        voltage = voltage / 32.768;
-        break;
-    }
+    case 3:
+      voltage = voltage / 32.768;
+      break;
   }
 }
 
 void cal_sensors()
 {
-
-  if (incomingByte == 56) // press key "8"
-  {
-    Serial.print("Reset pH ...");
-    IsoP = 7.14;
-    Alpha = 0.05916;
-  }
-  else if (incomingByte == 52) // press key "4"
-  {
-    Serial.print("Cal. pH 4.00 ...");
-    Alpha = (IsoP - 4) / pHvoltage / (T + Temp);
-  }
-  else if (incomingByte == 55) // press key "7"
+  switch (incomingByte)
   {
 
+    case 49:
+      Serial.print("\Reset pH ...");
+      IsoP = 7.14;
+      Alpha = 0.05916;
+      break;
+
+    case 52:
+      Serial.print("\n\Cal. pH 4.00 ...");
+      Alpha = (IsoP - 4) / pHvoltage / (T + TempManual);
+      break;
+
+    case 55:
+      Serial.print("\n\Cal. pH 6.86 ...");
+      IsoP = (IsoP - pH + 6.86);
+      //IsoP = (IsoP - pH + 7.00);
+      break;
+
+    case 57:
+      Serial.print("\n\Cal. pH 9.18 ...");
+      Alpha = (IsoP - 9.18) / pHvoltage / (T + TempManual);
+      //Serial.print("\n\Cal. pH 10.00 ...");
+      //Alpha = (IsoP - 10.00) / pHvoltage / (T + TempManual);
+      break;
   }
   SaveSet();
   Serial.println(" complete");
 }
+
 
 void loop()
 {

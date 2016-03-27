@@ -40,7 +40,7 @@ For automatic temperature compensation solder a 100 ohm resistor (blue) and conn
 
 **Sample code:** [*PhAndTempMeasurementSerial.ino*](https://github.com/cyberplantru/pH-Mini-v30-sample-code/blob/master/PhAndTempMeasurementSerial/PhAndTempMeasurementSerial.ino)
 
-## Isolated sensor
+## Galvanic Isolation
 
 To eliminate electrical noise use [I2Ciso Module](https://github.com/cyberplantru/I2C-iso/). 
 Also I2C*iso* is needed for measurement of pH and Conductivity together in a same reservoir.
