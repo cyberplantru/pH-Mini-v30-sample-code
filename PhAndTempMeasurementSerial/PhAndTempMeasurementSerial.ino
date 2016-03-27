@@ -12,9 +12,9 @@
 #include <EEPROM.h>
 
 #define pHmini 0x48               // I2C adress for request
-#define alpha              0.38 // +- 0.01
-#define PtRES_nominal      100.00 // +- 0.38 for pt100
-#define T 273.15                    // degrees Kelvin
+#define alpha              0.38   // +- 
+#define PtRES_nominal      100.00 // 100R at 0*C, +- alpha
+#define T 273.15                  // degrees Kelvin
 #define PGA_GAIN 10
 
 float voltage, pHvoltage, pH, Temp;
@@ -24,8 +24,7 @@ float PtRES_calculated;
 float RREF;
 float IsoP;
 float Alpha;
-int ReadSensors = 0;
-int incomingByte = 0;
+int ReadSensors, flag, incomingByte = 0;
 int TempManual = 25;
 
 SPISettings mySettting(16000000, MSBFIRST, SPI_MODE3);
@@ -47,13 +46,19 @@ void setup()
   Serial.begin(9600);
   SPI.begin();
   pinMode(ss_pin, OUTPUT);
-  writeLMP91200(0x0000); // reset lmp91200
   Read_EE();
-  timer.setInterval(900L, cicleRead);
+  timer.setInterval(1000L, cicleRead);
   Serial.println("pH Mini v3.0");
-  Serial.println("\n\      Cal. pH 4.00 ---- 4");
-  Serial.println("      Cal. pH 6.86 ---- 7");
-  Serial.println("      Reset pH ---------8");
+  Serial.println("\n\      Cal. pH 6.86 ---> 7");
+  Serial.println("      Cal. pH 4.00 ---> 4");
+  Serial.println("      Reset pH -------> 8");
+  writeLMP91200(0x0000); // reset lmp91200
+  for (int i = 0; i < 14; i++)
+  {
+    Serial.print(". ");
+    delay(100);
+  }
+  writeLMP91200(0xF680); // table 5, pt100, VCM 1/4
 }
 
 struct MyObject {
@@ -78,13 +83,14 @@ void SaveSet()
     Alpha
   };
   EEPROM.put(eeAddress, customVar);
+  Serial.println(" ... complete");
 }
 
 void showResults ()
 {
-  Serial.print("\n\Temp ");
-  Serial.print(Temp, 2);
-  Serial.print(" *C ");
+  Serial.print("\n\ t ");
+  Serial.print(Temp, 1);
+  Serial.print("*C ");
   Serial.print("  pH ");
   Serial.println(pH);
 }
@@ -100,10 +106,9 @@ void calcResult()
 {
   switch (ReadSensors)
   {
-
     case 1: // VOUT_RREF0
 
-      ADSread(2); // pt1000 ADSread(3);
+      ADSread(1); // pt100
       VOUT_RREF0 = voltage;
       writeLMP91200(0xEE80); // table 6, pt100
       //writeLMP91200(0xCE80); // table 6, pt1000
@@ -111,7 +116,7 @@ void calcResult()
 
     case 2: // VOUT_RREF1
 
-      ADSread(2); // pt1000 ADSread(3);
+      ADSread(1); // pt1000 ADSread(3);
       VOUT_RREF1 = voltage;
       writeLMP91200(0xAE80); // table 7, pt100, VCM 1/4
       //writeLMP91200(0x8E80); // table 7, pt1000, VCM 1/4
@@ -119,7 +124,7 @@ void calcResult()
 
     case 3: // Temp
 
-      ADSread(2); // pt1000 ADSread(3);
+      ADSread(1); // pt1000 ADSread(3);
       VOUT_PtRES = voltage;
       Vos = (VOUT_RREF0 - VOUT_RREF1) / 5;
       I_true = (2 * VOUT_RREF1 - VOUT_RREF0) / (10 * VOUT_RREF1);
@@ -134,7 +139,6 @@ void calcResult()
       if (-25 > Temp || Temp > 250) {
         Temp = TempManual;
       }
-
       ADSread(0);
       pH = IsoP - Alpha * (T + Temp) * pHvoltage;
       writeLMP91200(0xF680); // table 5, pt100, VCM 1/4
@@ -142,6 +146,7 @@ void calcResult()
       break;
 
     case 5:
+      flag = 0;
       showResults ();
       break;
   }
@@ -153,8 +158,7 @@ void ADSread(int rate) // read ADS
   byte highbyte, lowbyte, configRegister;
   float data;
   Wire.requestFrom(pHmini, 3);
-  while (Wire.available())
-  {
+  while (Wire.available()) {
     highbyte = Wire.read();
     lowbyte = Wire.read();
     configRegister = Wire.read();
@@ -167,62 +171,51 @@ void ADSread(int rate) // read ADS
     case 0:
       pHvoltage = voltage / 32768;
       break;
-    /*
-        case 1:
-          voltage = voltage / 3276.8;
-          break;
-    */
-    case 2:
-      voltage = voltage / 327.68;
-      break;
 
-    case 3:
-      voltage = voltage / 32.768;
+    case 1:
+      voltage = voltage / 327.68;   // pt 100
+      //voltage = voltage / 32.768; // pt 1000
       break;
   }
 }
 
 void cal_sensors()
 {
+  flag = 1;
   switch (incomingByte)
   {
-
     case 49:
-      Serial.print("\Reset pH ...");
-      IsoP = 7.14;
+      Serial.print("Reset pH ...");
+      IsoP = 7.5;
       Alpha = 0.05916;
       break;
 
     case 52:
-      Serial.print("\n\Cal. pH 4.00 ...");
-      Alpha = (IsoP - 4) / pHvoltage / (T + TempManual);
+      Serial.print("Cal. pH 4.00 ...");
+      Alpha = (IsoP - 4) / pHvoltage / (T + Temp);
+      //Serial.print("\n\Cal. pH 9.18 ...");
+      //Alpha = (IsoP - 9.18) / pHvoltage / (T + Temp);
+      //Serial.print("\n\Cal. pH 10.00 ...");
+      //Alpha = (IsoP - 10.00) / pHvoltage / (T + Temp);
+      Serial.print(Alpha);
       break;
 
     case 55:
-      Serial.print("\n\Cal. pH 6.86 ...");
+      Serial.print("Cal. pH 6.86 ... ");
       IsoP = (IsoP - pH + 6.86);
       //IsoP = (IsoP - pH + 7.00);
-      break;
-
-    case 57:
-      Serial.print("\n\Cal. pH 9.18 ...");
-      Alpha = (IsoP - 9.18) / pHvoltage / (T + TempManual);
-      //Serial.print("\n\Cal. pH 10.00 ...");
-      //Alpha = (IsoP - 10.00) / pHvoltage / (T + TempManual);
+      Serial.print(IsoP);
       break;
   }
   SaveSet();
-  Serial.println(" complete");
 }
-
 
 void loop()
 {
-  if (Serial.available() > 0) //  function of calibration
-  {
+  if (Serial.available() > 0 && flag == 0) {
     incomingByte = Serial.read();
     cal_sensors();
   }
+
   timer.run();
 }
-
