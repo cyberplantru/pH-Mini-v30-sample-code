@@ -1,4 +1,4 @@
-![EC Reader](http://image.cyber-plant.com/var/resizes/CyberPlantMiniSeries-01.jpg?m=1458131397)
+![CyberPlant_Mini](http://image.cyber-plant.com/var/resizes/CyberPlantMiniSeriesCr.jpg?m=1459098468)
 
 ##CyberPlant pH Mini v3.0
 
