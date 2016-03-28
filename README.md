@@ -12,7 +12,7 @@ ranging from 2.7V to 5.5V. Can use as Shield for Arduino Pro Mini. The CyberPlan
 - Measuring Range pH: 0-14
 - Accurate pH readings: ± 0.01 pH
 - Temp sensor support: pt100/pt1000
-- Accurate temperature readings::  ±0.3°C
+- Accurate temperature readings:  ±0.1°C
 - BNC Connector
 - Can use as Shield for Arduino Pro Mini
 - PCB Size : 33.02 mm×17.78 mm
@@ -35,7 +35,7 @@ Switch between the temperature and pH sensors is available through the SPI inter
 
 SPI headers pin SCLK (D13), SDI (D11) and CSB (D10) compatible with Arduino Mini. 
 
-For automatic temperature compensation solder a 100 ohm resistor (blue) and connect a Pt100 temperature sensor. The 3-step measurement can reach a precision as high as ±0.1°C (with RREF @ 0.01% of tolerance).
+For automatic temperature compensation solder a 100 ohm resistor (blue) and connect a Pt100 temperature sensor. The 3-step measurement can reach a precision as high as ±0.1°C
 
 
 **Sample code:** [*PhAndTempMeasurementSerial.ino*](https://github.com/cyberplantru/pH-Mini-v30-sample-code/blob/master/PhAndTempMeasurementSerial/PhAndTempMeasurementSerial.ino)
