@@ -4,7 +4,7 @@
   http://www.cyber-plant.com
   by CyberPlant LLC, 14 November 2015
   This example code is in the public domain.
-  upd. 27.03.2016
+  upd. 29.03.2016
 */
 #include <SimpleTimer.h>
 #include "Wire.h"
@@ -51,7 +51,7 @@ void setup()
   Serial.println("pH Mini v3.0");
   Serial.println("\n\      Cal. pH 6.86 ---> 7");
   Serial.println("      Cal. pH 4.00 ---> 4");
-  Serial.println("      Reset pH -------> 8");
+  Serial.println("      Reset pH -------> 5");
   writeLMP91200(0x0000); // reset lmp91200
   for (int i = 0; i < 14; i++)
   {
@@ -184,10 +184,11 @@ void cal_sensors()
   flag = 1;
   switch (incomingByte)
   {
-    case 49:
+    case 53:
       Serial.print("Reset pH ...");
-      IsoP = 7.5;
+      IsoP = 7,00;
       Alpha = 0.05916;
+      SaveSet();
       break;
 
     case 52:
@@ -198,6 +199,7 @@ void cal_sensors()
       //Serial.print("\n\Cal. pH 10.00 ...");
       //Alpha = (IsoP - 10.00) / pHvoltage / (T + Temp);
       Serial.print(Alpha);
+      SaveSet();
       break;
 
     case 55:
@@ -205,9 +207,9 @@ void cal_sensors()
       IsoP = (IsoP - pH + 6.86);
       //IsoP = (IsoP - pH + 7.00);
       Serial.print(IsoP);
+      SaveSet();
       break;
   }
-  SaveSet();
 }
 
 void loop()

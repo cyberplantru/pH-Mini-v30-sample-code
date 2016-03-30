@@ -4,7 +4,7 @@
   http://www.cyber-plant.com
   by CyberPlant LLC, 14 November 2015
   This example code is in the public domain.
-  upd. 27.03.2016
+  upd. 29.03.2016
 */
 #include <SimpleTimer.h>
 #include "Wire.h"
@@ -15,7 +15,7 @@
 byte highbyte, lowbyte, configRegister;
 float pHvoltage, pH, IsoP, Alpha, data;
 int TempManual = 25;
-int incomingByte = 0;
+int incomingByte, flag = 0;
 
 SimpleTimer timer;
 
@@ -25,11 +25,15 @@ void setup()
   Serial.begin(9600);
   Read_EE();
   Serial.println("pH Mini v3.0");
-  Serial.println("\n\      Cal. pH 6.86 ---- 7");
-  Serial.println("      Cal. pH 4.00 ---- 4");
-  Serial.println("      Cal. pH 9.18 ---- 9");
-  Serial.println("      Reset pH ---------1");
-  timer.setInterval(2500L, pH_read);
+  Serial.println("\n\      Cal. pH 6.86 ---> 7");
+  Serial.println("      Cal. pH 4.00 ---> 4");
+  Serial.println("      Reset pH -------> 5");
+  for (int i = 0; i < 14; i++) {
+    Serial.print(". ");
+    delay(100);
+  }
+  Serial.println();
+  timer.setInterval(2000L, pH_read);
 }
 
 struct MyObject {
@@ -54,6 +58,7 @@ void SaveSet()
     Alpha
   };
   EEPROM.put(eeAddress, customVar);
+  Serial.println(" . . . complete");
 }
 
 void pH_read() // read ADS
@@ -77,42 +82,45 @@ void ADSread ()
   pH = IsoP - Alpha * (T + TempManual) * pHvoltage;
   Serial.print("\n\pH ");
   Serial.println(pH);
+  flag = 0;
 }
 
 void cal_sensors()
 {
+  flag = 1;
   switch (incomingByte)
   {
-
-    case 49:
-      Serial.print("\n\Reset pH ...");
-      IsoP = 7.14;
+    case 53:
+      Serial.print("Reset pH ");
+      IsoP = 7.00;
       Alpha = 0.05916;
+      SaveSet();
       break;
 
     case 52:
-      Serial.print("\n\Cal. pH 4.00 ...");
+      Serial.print("Cal. pH 4.00 . . . ");
       Alpha = (IsoP - 4) / pHvoltage / (T + TempManual);
+      //Serial.print("\n\Cal. pH 9.18 ...");
+      //Alpha = (IsoP - 9.18) / pHvoltage / (T + TempManual);
+      //Serial.print("\n\Cal. pH 10.00 ...");
+      //Alpha = (IsoP - 10.00) / pHvoltage / (T + TempManual);
+      Serial.print(Alpha);
+      SaveSet();
       break;
 
     case 55:
-      Serial.print("\n\Cal. pH 6.86 ...");
+      Serial.print("Cal. pH 6.86 . . . ");
       IsoP = (IsoP - pH + 6.86);
       //IsoP = (IsoP - pH + 7.00);
-      break;
-
-    case 57:
-      Serial.print("\n\Cal. pH 9.18 ...");
-      Alpha = (IsoP - 9.18) / pHvoltage / (T + TempManual);
+      Serial.print(IsoP);
+      SaveSet();
       break;
   }
-  SaveSet();
-  Serial.println(" complete");
 }
 
 void loop()
 {
-  if (Serial.available() > 47) {
+  if (Serial.available() > 0 && flag == 0) {
     incomingByte = Serial.read();
     cal_sensors();
   }
