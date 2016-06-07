@@ -25,9 +25,9 @@ void setup()
   Serial.begin(9600);
   Read_EE();
   Serial.println("pH Mini v3.0");
-  Serial.println("\n\      Cal. pH 6.86 ---> 7");
-  Serial.println("      Cal. pH 4.00 ---> 4");
-  Serial.println("      Reset pH -------> 5");
+    Serial.println("\n\       Reset pH -------> 0");
+  Serial.println("     Cal. pH 6.86 ---> 1");
+  Serial.println("      Cal. pH 4.00 ---> 2");
   for (int i = 0; i < 14; i++) {
     Serial.print(". ");
     delay(100);
@@ -90,14 +90,22 @@ void cal_sensors()
   flag = 1;
   switch (incomingByte)
   {
-    case 53:
+    case 48:
       Serial.print("Reset pH ");
       IsoP = 7.00;
       Alpha = 0.05916;
       SaveSet();
       break;
 
-    case 52:
+    case 49:
+      Serial.print("Cal. pH 6.86 . . . ");
+      IsoP = (IsoP - pH + 6.86);
+      //IsoP = (IsoP - pH + 7.00);
+      Serial.print(IsoP);
+      SaveSet();
+      break;
+
+    case 50:
       Serial.print("Cal. pH 4.00 . . . ");
       Alpha = (IsoP - 4) / pHvoltage / (T + TempManual);
       //Serial.print("\n\Cal. pH 9.18 ...");
@@ -105,14 +113,6 @@ void cal_sensors()
       //Serial.print("\n\Cal. pH 10.00 ...");
       //Alpha = (IsoP - 10.00) / pHvoltage / (T + TempManual);
       Serial.print(Alpha);
-      SaveSet();
-      break;
-
-    case 55:
-      Serial.print("Cal. pH 6.86 . . . ");
-      IsoP = (IsoP - pH + 6.86);
-      //IsoP = (IsoP - pH + 7.00);
-      Serial.print(IsoP);
       SaveSet();
       break;
   }
