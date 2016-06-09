@@ -57,7 +57,7 @@ Also I2C*iso* is needed for measurement of pH and Conductivity together in a sam
 -     2 x 12 PLS connectors
 -     1 x 4 angle PLS
 -     2 x 4k7 resistors
--     1 x 100R 1% resistor
+-     1 x 100R 0.01% resistor
 
 ----------
 
