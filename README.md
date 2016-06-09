@@ -52,8 +52,16 @@ Also I2C*iso* is needed for measurement of pH and Conductivity together in a sam
 
 ----------
 
-**[Hardware](https://github.com/cyberplantru/pH-to-I2C-v20-hardware)**
+### Package include:
+-     1 x pH Mini v3.0
+-     2 x 12 PLS connectors
+-     1 x 4 angle PLS
+-     2 x 4k7 resistors
+-     1 x 100R 1% resistor
 
+----------
 
-[link to CyberPlant](http://www.cyber-plant.com).
+### Documentation:
 
+- [Hardware](https://github.com/cyberplantru/pH-Mini-v30-hardware/)
+- [link to CyberPlant](http://www.cyber-plant.com).
